@@ -1,0 +1,82 @@
+package com.gala.bug;
+
+import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
+import org.apache.rocketmq.common.message.MessageExt;
+import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
+import org.apache.rocketmq.remoting.common.RemotingHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.util.List;
+
+@Component
+public class MQPushConsumer implements MessageListenerConcurrently {
+    private  static final Logger LOGGER = LoggerFactory.getLogger(MQPushConsumer.class);
+
+    private final DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("TestConsumer");
+
+    @Value("${rocketmq.namesrvaddr}")
+    private String nameservAddr;
+
+    /*
+     * 初始化消费者
+     */
+    @PostConstruct
+    public void  start(){
+        try {
+            LOGGER.info("MQ:启动消费者");
+            consumer.setNamesrvAddr(nameservAddr);
+            //消息队列从头开始消费
+            consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+            //集群消费模式
+            consumer.setMessageModel(MessageModel.CLUSTERING);
+            consumer.subscribe("TopicTest","*");
+//            consumer.subscribe("TopicTest","oneway");
+//            consumer.setConsumerGroup("consumerGroup1");
+            //注册消息监听器
+            consumer.registerMessageListener(this);
+            consumer.start();
+        }catch (MQClientException e){
+            LOGGER.error("MQ:启动消费者失败:{}-{}",e.getResponseCode(),e.getErrorMessage());
+            throw  new RuntimeException(e.getErrorMessage(),e);
+        }
+    }
+
+    @Override
+    public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
+        int index =0;
+        try {
+            for(;index<msgs.size();index++){
+                MessageExt msg = msgs.get(index);
+                String messageBody = new String(msg.getBody(), RemotingHelper.DEFAULT_CHARSET);
+                System.out.printf("MQPushConsumer消费者监听： queueID:%d Messages:%s Tags:%s%n",  msgs.get(index).getQueueId(),messageBody,msgs.get(index).getTags());
+            }
+        }catch (Exception e){
+            LOGGER.error(e.getMessage(),e);
+        }finally {
+            if(index <msgs.size()){
+                context.setAckIndex(index+1);
+            }
+        }
+        return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+    }
+
+
+
+    @PreDestroy
+    public void stop(){
+        if(consumer !=null){
+            consumer.shutdown();
+            LOGGER.error("MQ:关闭消费者");
+        }
+    }
+}

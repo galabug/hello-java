@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="USE_RELEASE_OPTION" value="false" />
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="hello-spring" />
+        <module name="hello-spring-diy" />
+        <module name="hello-mybatis" />
+        <module name="hello-java" />
+        <module name="hello-rocketmq" />
+        <module name="hello-spring-cloud" />
+        <module name="hello-rocketmq-consumer" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="hello-mybatis" target="11" />
+      <module name="hello-rocketmq" target="11" />
+      <module name="hello-rocketmq-consumer" target="11" />
+      <module name="hello-spring" target="11" />
+      <module name="hello-spring-cloud" target="11" />
+      <module name="hello-spring-diy" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="hello-mybatis" options="-parameters" />
+      <module name="hello-rocketmq" options="-parameters" />
+      <module name="hello-rocketmq-consumer" options="-parameters" />
+      <module name="hello-spring" options="-parameters" />
+      <module name="hello-spring-cloud" options="-parameters" />
+    </option>
+  </component>
+</project>

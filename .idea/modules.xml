@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/hello-mybatis/hello-mybatis.iml" filepath="$PROJECT_DIR$/hello-mybatis/hello-mybatis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello-rocketmq/hello-rocketmq.iml" filepath="$PROJECT_DIR$/hello-rocketmq/hello-rocketmq.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello-rocketmq-consumer/hello-rocketmq-consumer.iml" filepath="$PROJECT_DIR$/hello-rocketmq-consumer/hello-rocketmq-consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello-spring/hello-spring.iml" filepath="$PROJECT_DIR$/hello-spring/hello-spring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello-spring-cloud/hello-spring-cloud.iml" filepath="$PROJECT_DIR$/hello-spring-cloud/hello-spring-cloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello-spring-diy/hello-spring-diy.iml" filepath="$PROJECT_DIR$/hello-spring-diy/hello-spring-diy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello-spring-diy/hello-spring-diy1.iml" filepath="$PROJECT_DIR$/hello-spring-diy/hello-spring-diy1.iml" />
+    </modules>
+  </component>
+</project>
